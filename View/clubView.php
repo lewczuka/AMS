@@ -42,6 +42,7 @@
     <input type="text" placeholder="Office Number"name="insOfficeNumber" size="18">
 <!-- Define two variables to pass values. -->    
 <input type="submit" value="Insert Club Data" name="insertsubmit"></p>
+<input type="submit" value="See All Records" name="seeAll">
 </form>
 
 <!-- Create a form to pass the values.  

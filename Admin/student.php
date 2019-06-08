@@ -40,6 +40,7 @@
       
 <input type="submit" value="update" name="updatesubmit"></p>
 <input type="submit" value="Clear Student Database" name="deleteAll"></p>
+<input type="submit" value="See All Records" name="seeAll">
 </form>
 
 <html>

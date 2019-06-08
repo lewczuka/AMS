@@ -55,10 +55,8 @@
 <!-- Define two variables to pass values. -->    
 <input type="submit" value="Insert Resource Data" name="insertsubmit"></p>
 <input type="submit" value="Clear Resource Database" name="deleteAll"></p>
+<input type="submit" value="See All Records" name="seeAll">
 </form>
-
-<form method="POST" action="resource.php">
-
 
 <!-- Create a form to pass the values.  
      See below for how to get the values. --> 
