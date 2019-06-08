@@ -52,6 +52,7 @@
 <!-- Define two variables to pass values. -->    
 <input type="submit" value="Insert Event Data" name="insertsubmit"></p>
 <input type="submit" value="Clear Event Database" name="deleteAll"></p>
+<input type="submit" value="See All Records" name="seeAll">
 </form>
 
 <!-- Create a form to pass the values.  

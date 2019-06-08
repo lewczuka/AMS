@@ -43,6 +43,7 @@
 <!-- Define two variables to pass values. -->    
 <input type="submit" value="Insert Club Data" name="insertsubmit"></p>
 <input type="submit" value="Clear Club Database" name="deleteAll"></p>
+<input type="submit" value="See All Records" name="seeAll">
 </form>
 
 <!-- Create a form to pass the values.  
