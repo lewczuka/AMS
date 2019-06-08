@@ -8,7 +8,8 @@
    <p><input type="text" placeholder="StudentID" name="insStudentID1" size="8"><input type="submit" value="Please identify with your StudentID" name="identification"></p>
 </form>
 
-<a href="student.php"><font size= "3">Click Here to Enable Admin View (ADMINS ONLY!)</a>
+<a href="student.php"><font size= "3">Click Here to Enable Admin View (ADMINS ONLY!)</a><br/>
+<a href="main.php"><font size= "1.5">Back to Main Menu</a>
 
 <p><font size="3">Insert a new student info into Student table below:</p>
 

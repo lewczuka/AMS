@@ -1,5 +1,6 @@
 <p><font size="20">AMS Events Database</p>
-<a href="event.php"><font size= "1.5">Click Here to Enable Admin View (ADMINS ONLY!)</a>
+<a href="event.php"><font size= "1.5">Click Here to Enable Admin View (ADMINS ONLY!)</a><br/>
+<a href="main.php"><font size= "1.5">Back to Main Menu</a>
 
 <form method="POST" action="eventView.php"> 
    <p><input type="submit" value="Initialize" name="reset"></p>
