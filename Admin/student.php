@@ -4,7 +4,8 @@
    <p><input type="submit" value="Initialize" name="reset"></p>
 </form>
 
-<a href="studentView.php"><font size= "3">Click Here to see Student's View</a>
+<a href="studentView.php"><font size= "3">Click Here to see Student's View</a><br/>
+<a href="main.php"><font size= "1.5">Back to Main Menu</a>
 
 <p><font size="3">Insert a new student info into Student table below:</p>
 

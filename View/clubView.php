@@ -2,7 +2,8 @@
 
 
 <p><font size="20">AMS Clubs Database</p>
-<a href="club.php"><font size= "1.5">Click Here to see admin view (ADMINS ONLY!)</a>
+<a href="club.php"><font size= "1.5">Click Here to see admin view (ADMINS ONLY!)</a><br/>
+<a href="main.php"><font size= "1.5">Back to Main Menu</a>
 
 <form method="POST" action="clubView.php"> 
    <p><input type="submit" value="Initialize" name="reset"></p>
