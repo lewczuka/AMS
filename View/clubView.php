@@ -24,7 +24,7 @@
 <input type="text" placeholder="type new value here.." name="updateValueData" size="18">
 <p><font size="3">Identify the club name of which you want to change the above value for :</p>
 <input type="text" placeholder="type club name here.." name="updateValueDataName" size="18">
-<input type="submit" name="Submit" value="updateValueAction">
+<input type="submit" name="updateValueAction" value="Update">
 
 </form>
 

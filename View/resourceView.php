@@ -1,49 +1,43 @@
 
-
-
-<p><font size="20">AMS Clubs Database</p>
-<a href="clubView.php"><font size= "1.5">Click Here to see student's view</a><br/>
+<p><font size="20">AMS Resource Database</p>
+<a href="resource.php"><font size= "1.5">Click Here to Enable Admin View (ADMINS ONLY!)</a><br/>
 <a href="main.php"><font size= "1.5">Back to Main Menu</a>
 
-<form method="POST" action="club.php"> 
+<form method="POST" action="resourceView.php"> 
    <p><input type="submit" value="Initialize" name="reset"></p>
 </form>
 
-<form method="POST" action="club.php"> 
-   <p><input type="text" placeholder="type club name here.." name="clubSearchString" size="18">
-   <input type="submit" value="Search for an club by its club name here" name="clubSearch"></p>
+<form method="POST" action="resourceView.php"> 
+   <p><input type="text" placeholder="type resource name here.." name="resourceSearchString" size="18">
+   <input type="submit" value="Search for a resource by its resource name here" name="resourceSearch"></p>
 </form>
 
-<form id="s" method="post" action="club.php">
+<form id="s" method="post" action="resourceView.php">
    <select name="updateValue">
-   <option value="clubName">Club Name</option>
-    <option value="description">Club Description</option>
-    <option value="contact">Club Contact</option>
-    <option value="officeNumber">Office Number</option>
+   <option value="resourceName">Resource Name</option>
+    <option value="description">Resource Description</option>
+    <option value="contact">Resource Contact</option>
+    <option value="hours">Hours</option>
+    <option value="locationID">Location ID</option>
   </select> 
 <input type="text" placeholder="type new value here.." name="updateValueData" size="18">
-<p><font size="3">Identify the club name of which you want to change the above value for :</p>
-<input type="text" placeholder="type club name here.." name="updateValueDataName" size="18">
-<input type="submit" name="updateValueAction" value="Update">
+<p><font size="3">Identify the resource name of which you want to change the above value for :</p>
+<input type="text" placeholder="type resource name here.." name="updateValueDataName" size="18">
+<input type="submit" value="Update" name="updateValueAction" >
 
 </form>
 
-
-
-<p><font size="3">Insert a new club info into our Club database table below:</p>
-
-<form method="POST" action="club.php">
-<!-- refreshes page when submitted -->
-
-   <p>
-    <input type="text" placeholder="Club Name" name="insClubName" size="18">
-    <input type="text" placeholder="Club Description" name="insDescription" size="18">
-    <input type="text" placeholder="Club Contact" name="insContact" size="18">
-    <input type="text" placeholder="Office Number"name="insOfficeNumber" size="18">
-<!-- Define two variables to pass values. -->    
-<input type="submit" value="Insert Club Data" name="insertsubmit"></p>
-<input type="submit" value="Clear Club Database" name="deleteAll"></p>
+<p><font size="3">Search for a resource with at least the indicated hours of operation :</p>
+<form method="POST" action="resourceView.php"> 
+    <select name="updateValueHours">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="40">40</option>
+    </select> 
+   <p><input type="submit" value="Search" name="resourceHoursSearch"></p>
 </form>
+
 
 <!-- Create a form to pass the values.  
      See below for how to get the values. --> 
@@ -96,8 +90,8 @@
 
 <?php
 
-//See all club listings 
-//Search clubs by name, input textbox
+//See all resource listings 
+//Search resources by name, input textbox
 
 /* This tells the system that it's no longer just parsing 
    HTML; it's now parsing PHP. */
@@ -227,67 +221,44 @@ if ($db_conn) {
 	if (array_key_exists('reset', $_POST)) {
 		// Drop old table...
 		echo "<br> dropping table <br>";
-		executePlainSQL("Drop table club");
+		executePlainSQL("Drop table resourceTable");
 
 		// Create new table...
 		echo "<br> creating new table <br>";
-		executePlainSQL("create table club (clubName varchar2(30), description varchar2(30), contact varchar2(30), officeNumber varchar(8), primary key (clubName))");
+		executePlainSQL("create table resourceTable (resourceName varchar2(30), description varchar2(30), contact varchar2(30), hours varchar2(8), locationID varchar2(30), primary key (resourceName))");
         OCICommit($db_conn);
 
 	} else {
-		if (array_key_exists('insertsubmit', $_POST)) {
-            $localvarrr = 6;
-			// Get values from the user and insert data into 
-                // the table.
-			$tuple = array (
-				":bind1" => $_POST['insClubName'],
-                ":bind2" => $_POST['insDescription'],
-                ":bind3" => $_POST['insContact'],
-                ":bind4" => $_POST['insOfficeNumber']
-                
-			);
-			$alltuples = array (
-				$tuple
-			);
-			executeBoundSQL("insert into club values (:bind1, :bind2, :bind3, :bind4)", $alltuples);
-			OCICommit($db_conn);
-
+        if (array_key_exists('updateValueAction', $_POST) || array_key_exists('updateValue', $_POST)) {
+            $tuple = array (
+                ":bind1" => $_POST['updateValueData'],
+                ":bind2" => $_POST['updateValue'],
+                ":bind3" => $_POST['updateValueDataName']
+            );
+            $alltuples = array (
+                $tuple
+            );
+            executeBoundSQL("update resourceTable set " . $_POST['updateValue'] . "=:bind1 where resourceName=:bind3 ", $alltuples);
+            OCICommit($db_conn);
         }
-        else {
-            if (array_key_exists('deleteAll', $_POST)) {
-                executePlainSQL("delete from club");
-                OCICommit($db_conn);
-            } 
-            else {
-                if (array_key_exists('updateValueAction', $_POST) || array_key_exists('updateValue', $_POST)) {
-                    $tuple = array (
-                        ":bind1" => $_POST['updateValueData'],
-                        ":bind2" => $_POST['updateValue'],
-                        ":bind3" => $_POST['updateValueDataName']
-                    );
-                    $alltuples = array (
-                        $tuple
-                    );
-                    executeBoundSQL("update club set " . $_POST['updateValue'] . "=:bind1 where clubName=:bind3 ", $alltuples);
-                    OCICommit($db_conn);
-                }
-            }
-        } 
     }
-    $lol = array_key_exists('clubSearch', $_POST);
+    $lol = array_key_exists('resourceSearch', $_POST) || array_key_exists('resourceHoursSearch', $_POST);
     $lol = !$lol;
 	if ($_POST && $success && $lol) {
         //POST-REDIRECT-GET -- See http://en.wikipedia.org/wiki/Post/Redirect/Get
-        header("location: club.php");
+        header("location: resourceView.php");
 	} else {
         // Select data...
-        if (array_key_exists('clubSearch', $_POST)) {
-            $eventsearched = $_POST['clubSearchString'];
-            $result = executePlainSQL("select * from club where clubName like '%" . $eventsearched . "%'");
+        if (array_key_exists('resourceSearch', $_POST)) {
+            $eventsearched = $_POST['resourceSearchString'];
+            $result = executePlainSQL("select * from resourceTable where resourceName like '%" . $eventsearched . "%'");
+        } elseif (array_key_exists('resourceHoursSearch', $_POST)) {
+            $hoursSearched = $_POST['updateValueHours'];
+            $result = executePlainSQL("select * from resourceTable where hours >= " . $hoursSearched . "");
         } else {
-            $result = executePlainSQL("select * from club");
+            $result = executePlainSQL("select * from resourceTable");
         }
-        $columnNames = array("Club Name", "Club Description", "Club Contact", "Office Number");
+        $columnNames = array("Resource Name", "Resource Description", "Resource Contact", "Hours", "Location ID");
         printTable($result, $columnNames);
 	}
 
