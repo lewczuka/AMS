@@ -232,14 +232,14 @@ function printTable($resultFromSQL, $namesOfColumnsArray)
 if ($db_conn) {
     global $localvarrr;
 	if (array_key_exists('reset', $_POST)) {
-		// Drop old table...
-		echo "<br> dropping table <br>";
-		executePlainSQL("Drop table event");
+		// // Drop old table...
+		// echo "<br> dropping table <br>";
+		// executePlainSQL("Drop table event");
 
-		// Create new table...
-		echo "<br> creating new table <br>";
-		executePlainSQL("create table event (eventName varchar2(30), eventDate date, description varchar2(30), tickets varchar2(30), locationID varchar(8) NOT NULL, executiveID number NOT NULL, primary key (eventName, eventDate))");
-        OCICommit($db_conn);
+		// // Create new table...
+		// echo "<br> creating new table <br>";
+		// executePlainSQL("create table event (eventName varchar2(30), eventDate date, description varchar2(30), tickets varchar2(30), locationID varchar(8) NOT NULL, executiveID number NOT NULL, primary key (eventName, eventDate))");
+        // OCICommit($db_conn);
 
 	} else {
 		if (array_key_exists('insertsubmit', $_POST)) {

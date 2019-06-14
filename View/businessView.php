@@ -208,14 +208,14 @@ function printTable($resultFromSQL, $namesOfColumnsArray)
 if ($db_conn) {
     global $localvarrr;
 	if (array_key_exists('reset', $_POST)) {
-		// Drop old table...
-		echo "<br> dropping table <br>";
-		executePlainSQL("Drop table businessTable");
+		// // Drop old table...
+		// echo "<br> dropping table <br>";
+		// executePlainSQL("Drop table businessTable");
 
-		// Create new table...
-		echo "<br> creating new table <br>";
-		executePlainSQL("create table businessTable (businessID varchar2(30), name varchar2(30), type varchar2(30), description varchar2(30), contact varchar2(30), hours varchar(8), locationID varchar(30), primary key (businessID))");
-        OCICommit($db_conn);
+		// // Create new table...
+		// echo "<br> creating new table <br>";
+		// executePlainSQL("create table businessTable (businessID varchar2(30), name varchar2(30), type varchar2(30), description varchar2(30), contact varchar2(30), hours varchar(8), locationID varchar(30), primary key (businessID))");
+        // OCICommit($db_conn);
 
 	} else {
 		if (array_key_exists('insertsubmit', $_POST)) {

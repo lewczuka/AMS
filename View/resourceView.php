@@ -221,13 +221,13 @@ if ($db_conn) {
     global $localvarrr;
 	if (array_key_exists('reset', $_POST)) {
 		// Drop old table...
-		echo "<br> dropping table <br>";
-		executePlainSQL("Drop table resourceTable");
+		// echo "<br> dropping table <br>";
+		// executePlainSQL("Drop table resourceTable");
 
-		// Create new table...
-		echo "<br> creating new table <br>";
-		executePlainSQL("create table resourceTable (resourceName varchar2(30), description varchar2(30), contact varchar2(30), hours varchar2(8), locationID varchar2(30), primary key (resourceName))");
-        OCICommit($db_conn);
+		// // Create new table...
+		// echo "<br> creating new table <br>";
+		// executePlainSQL("create table resourceTable (resourceName varchar2(30), description varchar2(30), contact varchar2(30), hours varchar2(8), locationID varchar2(30), primary key (resourceName))");
+        // OCICommit($db_conn);
 
 	} else {
         if (array_key_exists('updateValueAction', $_POST) || array_key_exists('updateValue', $_POST)) {
