@@ -1,0 +1,13 @@
+drop table office cascade constraints;
+drop table postalcode cascade constraints;
+drop table visit cascade constraints;
+drop table student cascade constraints;
+drop table location cascade constraints;
+drop table resourcebasedat cascade constraints;
+drop table club cascade constraints;
+drop table memberof cascade constraints;
+drop table accesses cascade constraints;
+drop table businesslocatedat cascade constraints;
+drop table eventhappensatrunby cascade constraints;
+drop table bookingreserves cascade constraints;
+drop table executiveoversees cascade constraints;
