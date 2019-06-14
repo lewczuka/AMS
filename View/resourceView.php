@@ -222,11 +222,11 @@ if ($db_conn) {
 	if (array_key_exists('reset', $_POST)) {
 		// Drop old table...
 		// echo "<br> dropping table <br>";
-		// executePlainSQL("Drop table resourceTable");
+		// executePlainSQL("Drop table resourcebasedat");
 
 		// // Create new table...
 		// echo "<br> creating new table <br>";
-		// executePlainSQL("create table resourceTable (resourceName varchar2(30), description varchar2(30), contact varchar2(30), hours varchar2(8), locationID varchar2(30), primary key (resourceName))");
+		// executePlainSQL("create table resourcebasedat (resourceName varchar2(30), description varchar2(30), contact varchar2(30), hours varchar2(8), locationID varchar2(30), primary key (resourceName))");
         // OCICommit($db_conn);
 
 	} else {
@@ -239,7 +239,7 @@ if ($db_conn) {
             $alltuples = array (
                 $tuple
             );
-            executeBoundSQL("update resourceTable set " . $_POST['updateValue'] . "=:bind1 where resourceName=:bind3 ", $alltuples);
+            executeBoundSQL("update resourcebasedat set " . $_POST['updateValue'] . "=:bind1 where resourceName=:bind3 ", $alltuples);
             OCICommit($db_conn);
         }
     }
@@ -252,12 +252,12 @@ if ($db_conn) {
         // Select data...
         if (array_key_exists('resourceSearch', $_POST)) {
             $eventsearched = $_POST['resourceSearchString'];
-            $result = executePlainSQL("select * from resourceTable where resourceName like '%" . $eventsearched . "%'");
+            $result = executePlainSQL("select * from resourcebasedat where resourceName like '%" . $eventsearched . "%'");
         } elseif (array_key_exists('resourceHoursSearch', $_POST)) {
             $hoursSearched = $_POST['updateValueHours'];
-            $result = executePlainSQL("select * from resourceTable where hours >= " . $hoursSearched . "");
+            $result = executePlainSQL("select * from resourcebasedat where hours >= " . $hoursSearched . "");
         } else {
-            $result = executePlainSQL("select * from resourceTable");
+            $result = executePlainSQL("select * from resourcebasedat");
         }
         $columnNames = array("Resource Name", "Resource Description", "Resource Contact", "Hours", "Location ID");
         printTable($result, $columnNames);

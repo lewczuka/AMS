@@ -258,13 +258,13 @@ if ($db_conn) {
 			$alltuples = array (
 				$tuple
 			);
-			executeBoundSQL("insert into event values (:bind1, TO_DATE(:bind2,'yyyy/mm/dd'), :bind3, :bind4, :bind5, :bind6)", $alltuples);
+			executeBoundSQL("insert into eventhappensatrunsby values (:bind1, TO_DATE(:bind2,'yyyy/mm/dd'), :bind3, :bind4, :bind5, :bind6)", $alltuples);
 			OCICommit($db_conn);
 
         }
         else {
             if (array_key_exists('deleteAll', $_POST)) {
-                executePlainSQL("delete from event");
+                executePlainSQL("delete from eventhappensatrunsby");
                 OCICommit($db_conn);
             } 
             else {
@@ -284,7 +284,7 @@ if ($db_conn) {
                     $alltuples = array (
                         $tuple
                     );
-                    executeBoundSQL("update event set " . $_POST['updateValue'] . "= " . $updateValueDataGeneric . " where eventName= TO_CHAR(:bind3) and eventDate= TO_DATE(:bind4,'yyyy/mm/dd')", $alltuples);
+                    executeBoundSQL("update eventhappensatrunsby set " . $_POST['updateValue'] . "= " . $updateValueDataGeneric . " where eventName= TO_CHAR(:bind3) and eventDate= TO_DATE(:bind4,'yyyy/mm/dd')", $alltuples);
                     OCICommit($db_conn);
                 }
             }
@@ -299,13 +299,13 @@ if ($db_conn) {
         // Select data...
         if (array_key_exists('eventSearch', $_POST)) {
             $eventsearched = $_POST['eventSearchString'];
-            $result = executePlainSQL("select * from event where eventName like '%" . $eventsearched . "%'");
+            $result = executePlainSQL("select * from eventhappensatrunsby where eventName like '%" . $eventsearched . "%'");
         } elseif (array_key_exists('eventDateSearch', $_POST)) {
             $eventDateSearchedBegin = $_POST['eventDateBegin'];
             $eventDateSearchedEnd = $_POST['eventDateEnd'];
-            $result = executePlainSQL("select * from event where eventDate between TO_DATE('" . $eventDateSearchedBegin . "','yyyy/mm/dd') and TO_DATE('" . $eventDateSearchedEnd . "','yyyy/mm/dd')");
+            $result = executePlainSQL("select * from eventhappensatrunsby where eventDate between TO_DATE('" . $eventDateSearchedBegin . "','yyyy/mm/dd') and TO_DATE('" . $eventDateSearchedEnd . "','yyyy/mm/dd')");
         } else {
-            $result = executePlainSQL("select * from event");
+            $result = executePlainSQL("select * from eventhappensatrunsby");
         }
         $columnNames = array("Event Name", "Event Date", "Event Description", "Event Tickets", "Event Location ID", "AMS Event Exec ID");
         printTable($result, $columnNames);
