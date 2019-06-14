@@ -215,13 +215,13 @@ if ($db_conn) {
     global $localvarrr;
 	if (array_key_exists('reset', $_POST)) {
 		// Drop old table...
-		echo "<br> dropping table <br>";
-		executePlainSQL("Drop table student");
+		// echo "<br> dropping table <br>";
+		// executePlainSQL("Drop table student");
 
-		// Create new table...
-		echo "<br> creating new table <br>";
-		executePlainSQL("create table student (studentID number, studentName varchar2(30), major varchar2(30), address varchar2(30), postalCode varchar(8), city varchar2(30), province varchar2(2), primary key (studentID))");
-		OCICommit($db_conn);
+		// // Create new table...
+		// echo "<br> creating new table <br>";
+		// executePlainSQL("create table student (studentID number, studentName varchar2(30), major varchar2(30), address varchar2(30), postalCode varchar(8), city varchar2(30), province varchar2(2), primary key (studentID))");
+		// OCICommit($db_conn);
 
 	} else {
 		if (array_key_exists('insertsubmit', $_POST)) {

@@ -226,14 +226,14 @@ function printTable($resultFromSQL, $namesOfColumnsArray)
 if ($db_conn) {
     global $localvarrr;
 	if (array_key_exists('reset', $_POST)) {
-		// Drop old table...
-		echo "<br> dropping table <br>";
-		executePlainSQL("Drop table club");
+		// // Drop old table...
+		// echo "<br> dropping table <br>";
+		// executePlainSQL("Drop table club");
 
-		// Create new table...
-		echo "<br> creating new table <br>";
-		executePlainSQL("create table club (clubName varchar2(30), description varchar2(30), contact varchar2(30), officeNumber varchar(8), primary key (clubName))");
-        OCICommit($db_conn);
+		// // Create new table...
+		// echo "<br> creating new table <br>";
+		// executePlainSQL("create table club (clubName varchar2(30), description varchar2(30), contact varchar2(30), officeNumber varchar(8), primary key (clubName))");
+        // OCICommit($db_conn);
 
 	} else {
 		if (array_key_exists('insertsubmit', $_POST)) {

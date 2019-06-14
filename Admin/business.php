@@ -242,14 +242,14 @@ function printTable($resultFromSQL, $namesOfColumnsArray)
 if ($db_conn) {
     global $localvarrr;
 	if (array_key_exists('reset', $_POST)) {
-		// Drop old table...
-		echo "<br> dropping table <br>";
-		executePlainSQL("Drop table businessTable");
+    // Drop old table...
+    //echo "<br> dropping table <br>";
+    //executePlainSQL("Drop table businesslocatedat");
 
-		// Create new table...
-		echo "<br> creating new table <br>";
-		executePlainSQL("create table businessTable (businessID varchar2(30), name varchar2(30), type varchar2(30), description varchar2(30), contact varchar2(30), hours varchar(8), locationID varchar(30), primary key (businessID))");
-        OCICommit($db_conn);
+    // Create new table...
+    //echo "<br> Please do not reset, make tables by running 'start initialize.sql' on sqplus <br>";
+    //executePlainSQL("create table businesslocatedat (businessID varchar2(30), name varchar2(30), type varchar2(30), description varchar2(30), contact varchar2(30), hours varchar(8), locationID varchar(30), primary key (businessID))");
+    //OCICommit($db_conn);
 
 	} else {
 		if (array_key_exists('insertsubmit', $_POST)) {
@@ -269,13 +269,13 @@ if ($db_conn) {
 			$alltuples = array (
 				$tuple
 			);
-			executeBoundSQL("insert into businessTable values (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7)", $alltuples);
+			executeBoundSQL("insert into businesslocatedat values (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7)", $alltuples);
 			OCICommit($db_conn);
 
         }
         else {
             if (array_key_exists('deleteAll', $_POST)) {
-                executePlainSQL("delete from businessTable");
+                executePlainSQL("delete from businesslocatedat");
                 OCICommit($db_conn);
             } 
             else {
@@ -288,7 +288,7 @@ if ($db_conn) {
                     $alltuples = array (
                         $tuple
                     );
-                    executeBoundSQL("update businessTable set " . $_POST['updateValue'] . "=:bind1 where businessID=:bind3 ", $alltuples);
+                    executeBoundSQL("update businesslocatedat set " . $_POST['updateValue'] . "=:bind1 where businessID=:bind3 ", $alltuples);
                     OCICommit($db_conn);
                 }
             }
@@ -303,12 +303,12 @@ if ($db_conn) {
         // Select data...
         if (array_key_exists('businessSearch', $_POST)) {
             $eventsearched = $_POST['businessSearchString'];
-            $result = executePlainSQL("select * from businessTable where name like '%" . $eventsearched . "%'");
+            $result = executePlainSQL("select * from businesslocatedat where name like '%" . $eventsearched . "%'");
         } elseif (array_key_exists('businessHoursSearch', $_POST)) {
             $hoursSearched = $_POST['updateValueHours'];
-            $result = executePlainSQL("select * from businessTable where hours >= " . $hoursSearched . "");
+            $result = executePlainSQL("select * from businesslocatedat where hours >= " . $hoursSearched . "");
         } else {
-            $result = executePlainSQL("select * from businessTable");
+            $result = executePlainSQL("select * from businesslocatedat");
         }
         $columnNames = array("Business ID", "Business Name", "Business Type", "Business Description", "Business Contact", "Hours", "Location ID");
         printTable($result, $columnNames);

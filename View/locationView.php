@@ -210,13 +210,13 @@ if ($db_conn) {
     global $localvarrr;
 	if (array_key_exists('reset', $_POST)) {
 		// Drop old table...
-		echo "<br> dropping table <br>";
-		executePlainSQL("Drop table location");
+		// echo "<br> dropping table <br>";
+		// executePlainSQL("Drop table location");
 
-		// Create new table...
-		echo "<br> creating new table <br>";
-		executePlainSQL("create table location (locationID varchar2(30), buildingCode varchar2(30), areaCode varchar2(30), capacity number, bookable varchar2(1), primary key (locationID))");
-        OCICommit($db_conn);
+		// // Create new table...
+		// echo "<br> creating new table <br>";
+		// executePlainSQL("create table location (locationID varchar2(30), buildingCode varchar2(30), areaCode varchar2(30), capacity number, bookable varchar2(1), primary key (locationID))");
+        // OCICommit($db_conn);
 
 	} else {
 		if (array_key_exists('insertsubmit', $_POST)) {
