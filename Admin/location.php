@@ -292,7 +292,6 @@ if ($db_conn) {
     $lol = !$lol;
 	if ($_POST && $success && $lol) {
         //POST-REDIRECT-GET -- See http://en.wikipedia.org/wiki/Post/Redirect/Get
-        header("location: location.php");
 	} else {
         // Select data...
         if (array_key_exists('locationSearch', $_POST)) {
