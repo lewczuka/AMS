@@ -2,9 +2,7 @@
 <a href="eventView.php"><font size= "1.5">Click Here to see student's view</a><br/>
 <a href="main.php"><font size= "1.5">Back to Main Menu</a>
 
-<form method="POST" action="event.php"> 
-   <p><input type="submit" value="Initialize" name="reset"></p>
-</form>
+
 
 <form method="POST" action="event.php"> 
    <p><input type="text" placeholder="type event name here.." name="eventSearchString" size="18">
@@ -15,6 +13,33 @@
    <p><input type="date" placeholder="type start date here.." name="eventDateBegin" size="18">
    <input type="date" placeholder="type end date here.." name="eventDateEnd" size="18">
    <input type="submit" value="Search for events between your two given dates" name="eventDateSearch"></p>
+</form>
+
+<p><font size="2">To delete a certain row of data, please type the event name here:</p>
+<form method="POST" action="event.php"> 
+   <p><input type="text" placeholder="type event name here.." name="deleteEventNameRow" size="18">
+   <input type="date" name="deleteEventDateRow" size="18">
+   <input type="submit" value="Delete Row" name="deleteCondition"></p>
+</form>
+
+<p><font size="2">Select one column to view out of all data:</p>
+<form method="POST" action="event.php"> 
+<select name="columnQueryValue">
+   <option value="eventName">Event Name</option>
+    <option value="eventDate">Event Date</option>
+    <option value="description">Description</option>
+    <option value="tickets">Tickets</option>
+    <option value="locationID">Location ID</option>
+    <option value="executiveID">AMS Executive ID</option>
+  </select>
+  <input type="submit" value="See Column Data" name="columnQuery"></p>
+</form>
+
+<p><font size="2">See AMS Exec name behind your event as well as the building and area!</p>
+<form method="POST" action="event.php"> 
+   <p><input type="text" placeholder="type event name here.." name="joinName" size="18">
+   <input type="date" name="joinDate" size="18">
+   <input type="submit" value="Search Event Details" name="joinQuery"></p>
 </form>
 
 <p><font size="2">If choosing event date, please enter the info in the format of YYYY-MM-DD:</p>
@@ -231,15 +256,9 @@ function printTable($resultFromSQL, $namesOfColumnsArray)
 // Connect Oracle...
 if ($db_conn) {
     global $localvarrr;
-	if (array_key_exists('reset', $_POST)) {
-		// // Drop old table...
-		// echo "<br> dropping table <br>";
-		// executePlainSQL("Drop table event");
-
-		// // Create new table...
-		// echo "<br> creating new table <br>";
-		// executePlainSQL("create table event (eventName varchar2(30), eventDate date, description varchar2(30), tickets varchar2(30), locationID varchar(8) NOT NULL, executiveID number NOT NULL, primary key (eventName, eventDate))");
-        // OCICommit($db_conn);
+	if (array_key_exists('deleteCondition', $_POST)) {
+		executePlainSQL("delete from eventhappensatrunby where eventName like '%" . $_POST['deleteEventNameRow'] . "%' and eventDate = TO_DATE('" . $_POST['deleteEventDateRow'] . "','yyyy/mm/dd')");
+        OCICommit($db_conn);
 
 	} else {
 		if (array_key_exists('insertsubmit', $_POST)) {
@@ -258,22 +277,22 @@ if ($db_conn) {
 			$alltuples = array (
 				$tuple
 			);
-			executeBoundSQL("insert into eventhappensatrunsby values (:bind1, TO_DATE(:bind2,'yyyy/mm/dd'), :bind3, :bind4, :bind5, :bind6)", $alltuples);
+			executeBoundSQL("insert into eventhappensatrunby values (:bind1, TO_DATE(:bind2,'yyyy/mm/dd'), :bind3, :bind4, :bind5, :bind6)", $alltuples);
 			OCICommit($db_conn);
 
         }
         else {
             if (array_key_exists('deleteAll', $_POST)) {
-                executePlainSQL("delete from eventhappensatrunsby");
+                executePlainSQL("delete from eventhappensatrunby");
                 OCICommit($db_conn);
             } 
             else {
                 if (array_key_exists('updateValueAction', $_POST) || array_key_exists('updateValue', $_POST)) {
                     $updateValueDataGeneric = $_POST['updateValueData'];
-                    if (1 === preg_match('~[0-9]~', $updateValueDataGeneric)){
+                    if ($_POST['updateValue'] === 'eventDate'){
                         $updateValueDataGeneric = "TO_DATE('" . $updateValueDataGeneric . "','yyyy/mm/dd')";
                     } else {
-                        $updateValueDataGeneric = "TO_CHAR('" . $updateValueDataGeneric . "')";
+                        $updateValueDataGeneric = "'" . $updateValueDataGeneric . "'";
                     }
                     $tuple = array (
                         ":bind1" => $_POST['updateValueData'],
@@ -284,30 +303,37 @@ if ($db_conn) {
                     $alltuples = array (
                         $tuple
                     );
-                    executeBoundSQL("update eventhappensatrunsby set " . $_POST['updateValue'] . "= " . $updateValueDataGeneric . " where eventName= TO_CHAR(:bind3) and eventDate= TO_DATE(:bind4,'yyyy/mm/dd')", $alltuples);
+                    executeBoundSQL("update eventhappensatrunby set " . $_POST['updateValue'] . "= " . $updateValueDataGeneric . " where eventName= '" . $_POST['updateValueDataName'] . "' and eventDate= TO_DATE(:bind4,'yyyy/mm/dd')", $alltuples);
                     OCICommit($db_conn);
                 }
             }
         } 
     }
-    $lol = array_key_exists('eventSearch', $_POST) || array_key_exists('eventDateSearch', $_POST);
+    $lol = array_key_exists('eventSearch', $_POST) || array_key_exists('joinQuery', $_POST) || array_key_exists('insertsubmit', $_POST) || array_key_exists('updateValue', $_POST) || array_key_exists('eventDateSearch', $_POST) || array_key_exists('columnQuery', $_POST) || array_key_exists('seeAll', $_POST);
     $lol = !$lol;
 	if ($_POST && $success && $lol) {
         //POST-REDIRECT-GET -- See http://en.wikipedia.org/wiki/Post/Redirect/Get
         header("location: event.php");
 	} else {
         // Select data...
+        $columnNames = array("Event Name", "Event Date", "Event Description", "Event Tickets", "Event Location ID", "AMS Event Exec ID");
         if (array_key_exists('eventSearch', $_POST)) {
             $eventsearched = $_POST['eventSearchString'];
-            $result = executePlainSQL("select * from eventhappensatrunsby where eventName like '%" . $eventsearched . "%'");
+            $result = executePlainSQL("select * from eventhappensatrunby where eventName like '%" . $eventsearched . "%'");
+        } elseif (array_key_exists('joinQuery', $_POST)) {
+            $result = executePlainSQL("select eventhappensatrunby.eventName, eventhappensatrunby.eventDate, eventhappensatrunby.executiveID, student.name, location.buildingCode, location.areaCode from eventhappensatrunby 
+            inner join student on eventhappensatrunby.executiveID=student.studentID inner join location on eventhappensatrunby.locationID=location.locationID where eventName like '%" . $_POST['joinName'] . "%' and eventDate = TO_DATE('" . $_POST['joinDate'] . "','yyyy/mm/dd')");
+            $columnNames = array("Event Name", "Event Date", "Executive ID", "Exec Name", "Building Code", "Area Code");
         } elseif (array_key_exists('eventDateSearch', $_POST)) {
             $eventDateSearchedBegin = $_POST['eventDateBegin'];
             $eventDateSearchedEnd = $_POST['eventDateEnd'];
-            $result = executePlainSQL("select * from eventhappensatrunsby where eventDate between TO_DATE('" . $eventDateSearchedBegin . "','yyyy/mm/dd') and TO_DATE('" . $eventDateSearchedEnd . "','yyyy/mm/dd')");
+            $result = executePlainSQL("select * from eventhappensatrunby where eventDate between TO_DATE('" . $eventDateSearchedBegin . "','yyyy/mm/dd') and TO_DATE('" . $eventDateSearchedEnd . "','yyyy/mm/dd')");
+        } elseif (array_key_exists('columnQuery', $_POST)) {
+            $result = executePlainSQL("select " . $_POST['columnQueryValue'] . " from eventhappensatrunby");
+            $columnNames = array("" . $_POST['columnQueryValue'] . "");
         } else {
-            $result = executePlainSQL("select * from eventhappensatrunsby");
+            $result = executePlainSQL("select * from eventhappensatrunby");
         }
-        $columnNames = array("Event Name", "Event Date", "Event Description", "Event Tickets", "Event Location ID", "AMS Event Exec ID");
         printTable($result, $columnNames);
 	}
 
