@@ -5,10 +5,6 @@
 <a href="main.php"><font size= "1.5">Back to Main Menu</a>
 
 <form method="POST" action="business.php"> 
-   <p><input type="submit" value="Initialize" name="reset"></p>
-</form>
-
-<form method="POST" action="business.php"> 
    <p><input type="text" placeholder="type business name here.." name="businessSearchString" size="18">
    <input type="submit" value="Search for a business by its name here" name="businessSearch"></p>
 </form>
@@ -28,17 +24,6 @@
 <input type="text" placeholder="type business ID here.." name="updateValueDataID" size="18">
 <input type="submit" name="updateValueAction" value="Update">
 
-</form>
-
-<p><font size="3">Search for a business with at least the indicated hours of operation :</p>
-<form method="POST" action="business.php"> 
-    <select name="updateValueHours">
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="20">20</option>
-        <option value="40">40</option>
-    </select> 
-   <p><input type="submit" value="Search" name="businessHoursSearch"></p>
 </form>
 
 
@@ -288,13 +273,13 @@ if ($db_conn) {
                     $alltuples = array (
                         $tuple
                     );
-                    executeBoundSQL("update businesslocatedat set " . $_POST['updateValue'] . "=:bind1 where businessID=:bind3 ", $alltuples);
+                    executeBoundSQL("update businesslocatedat set " . $_POST['updateValue'] . "='" . $_POST['updateValueData'] ."' where businessID='" . $_POST['updateValueDataID'] . "'", $alltuples);
                     OCICommit($db_conn);
                 }
             }
         } 
     }
-    $lol = array_key_exists('businessSearch', $_POST) || array_key_exists('businessHoursSearch', $_POST);
+    $lol = array_key_exists('businessSearch', $_POST);
     $lol = !$lol;
 	if ($_POST && $success && $lol) {
         //POST-REDIRECT-GET -- See http://en.wikipedia.org/wiki/Post/Redirect/Get
@@ -304,12 +289,14 @@ if ($db_conn) {
         if (array_key_exists('businessSearch', $_POST)) {
             $eventsearched = $_POST['businessSearchString'];
             $result = executePlainSQL("select * from businesslocatedat where name like '%" . $eventsearched . "%'");
-        } elseif (array_key_exists('businessHoursSearch', $_POST)) {
-            $hoursSearched = $_POST['updateValueHours'];
-            $result = executePlainSQL("select * from businesslocatedat where hours >= " . $hoursSearched . "");
         } else {
             $result = executePlainSQL("select * from businesslocatedat");
         }
+        $businessCount = executePlainSQL("select count(*) from businesslocatedat");
+        $row = oci_fetch_array($businessCount);
+        $rowVal = $row[0];
+        // AGGREGATE EXAMPLE
+        echo "<br><p><font size='3'>AMS UBC is proud to present that we have " . $rowVal . " AMS-backed businesses in campus, thank you to all supporters and partners!</p><br>";
         $columnNames = array("Business ID", "Business Name", "Business Type", "Business Description", "Business Contact", "Hours", "Location ID");
         printTable($result, $columnNames);
 	}
