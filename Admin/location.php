@@ -305,6 +305,9 @@ if ($db_conn) {
         }
         $columnNames = array("Location ID", "Building Code", "Area Code", "Capacity", "Bookable");
         printTable($result, $columnNames);
+
+        $columnNames2 = array("Booking ID", "Student ID", "Start Date Time", "End Date Time", "Status", "Location ID");
+        printTable($result, $columnNames2);
 	}
 
 	//Commit to save changes...
