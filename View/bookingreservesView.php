@@ -1,35 +1,18 @@
-
-
 <p><font size="20">AMS Location Database</p>
-<a href="locationView.php"><font size= "1.5">Click Here to see student's view</a><br/>
+<a href="location.php"><font size= "1.5">Click Here to Enable Admin View (ADMINS ONLY!)</a><br/>
 <a href="main.php"><font size= "1.5">Back to Main Menu</a>
 
-<form method="POST" action="location.php"> 
+<form method="POST" action="locationView.php"> 
    <p><input type="submit" value="Initialize" name="reset"></p>
 </form>
 
-<form method="POST" action="location.php"> 
+<form method="POST" action="locationView.php"> 
    <p><input type="text" placeholder="type location ID here.." name="locationSearchString" size="18">
    <input type="submit" value="Search for a location by its ID here" name="locationSearch"></p>
 </form>
 
-<form id="s" method="post" action="location.php">
-   <select name="updateValue">
-    <option value="locationID">Location ID</option>
-    <option value="buidingCode">Building Code</option>
-    <option value="areaCode">Area Code</option>
-    <option value="capacity">Capacity</option>
-    <option value="bookable">Bookable</option>
-  </select> 
-<input type="text" placeholder="type new value here.." name="updateValueData" size="18">
-<p><font size="3">Identify the location ID of which you want to change the above value for :</p>
-<input type="text" placeholder="type location ID here.." name="updateValueDataID" size="18">
-<input type="submit" name="updateValueAction" value="Update">
-
-</form>
-
 <p><font size="3">Search for a location with at least the indicated capacity allowed :</p>
-<form method="POST" action="location.php"> 
+<form method="POST" action="locationView.php"> 
     <select name="updateValueCapacity">
         <option value="5">5</option>
         <option value="10">10</option>
@@ -40,21 +23,8 @@
 </form>
 
 
-
-<p><font size="3">Insert a new location info into our Location database table below, for Bookable input "Y" for yes and "N" for no:</p>
-
-<form method="POST" action="location.php">
+<form method="POST" action="locationView.php">
 <!-- refreshes page when submitted -->
-
-   <p>
-    <input type="text" placeholder="Location ID"name="insID" size="18">
-    <input type="text" placeholder="Building Code" name="insBuildingCode" size="18">
-    <input type="text" placeholder="Area Code" name="insAreaCode" size="18">
-    <input type="number" placeholder="Capacity"name="insCapacity" size="18">
-    <input type="text" placeholder="Bookable" name="insBookable" size="1">
-<!-- Define two variables to pass values. -->    
-<input type="submit" value="Insert Location Data" name="insertsubmit"></p>
-<input type="submit" value="Clear Location Database" name="deleteAll"></p>
 <input type="submit" value="See All Records" name="seeAll">
 </form>
 
@@ -126,31 +96,31 @@ $db_conn = OCILogon("ora_ansel", "a15984164",
 
 function executePlainSQL($cmdstr) { 
      // Take a plain (no bound variables) SQL command and execute it.
-	//echo "<br>running ".$cmdstr."<br>";
-	global $db_conn, $success;
-	$statement = OCIParse($db_conn, $cmdstr); 
+    //echo "<br>running ".$cmdstr."<br>";
+    global $db_conn, $success;
+    $statement = OCIParse($db_conn, $cmdstr); 
      // There is a set of comments at the end of the file that 
      // describes some of the OCI specific functions and how they work.
 
-	if (!$statement) {
-		echo "<br>Cannot parse this command: " . $cmdstr . "<br>";
-		$e = OCI_Error($db_conn); 
+    if (!$statement) {
+        echo "<br>Cannot parse this command: " . $cmdstr . "<br>";
+        $e = OCI_Error($db_conn); 
            // For OCIParse errors, pass the connection handle.
-		echo htmlentities($e['message']);
-		$success = False;
-	}
+        echo htmlentities($e['message']);
+        $success = False;
+    }
 
-	$r = OCIExecute($statement, OCI_DEFAULT);
-	if (!$r) {
-		echo "<br>Cannot execute this command: " . $cmdstr . "<br>";
-		$e = oci_error($statement); 
+    $r = OCIExecute($statement, OCI_DEFAULT);
+    if (!$r) {
+        echo "<br>Cannot execute this command: " . $cmdstr . "<br>";
+        $e = oci_error($statement); 
            // For OCIExecute errors, pass the statement handle.
-		echo htmlentities($e['message']);
-		$success = False;
-	} else {
+        echo htmlentities($e['message']);
+        $success = False;
+    } else {
 
-	}
-	return $statement;
+    }
+    return $statement;
 
 }
 
@@ -163,46 +133,46 @@ function debug_to_console($data) {
 }
 
 function executeBoundSQL($cmdstr, $list) {
-	/* Sometimes the same statement will be executed several times.
+    /* Sometimes the same statement will be executed several times.
         Only the value of variables need to be changed.
-	   In this case, you don't need to create the statement several
+       In this case, you don't need to create the statement several
         times.  Using bind variables can make the statement be shared
         and just parsed once.
         This is also very useful in protecting against SQL injection
         attacks.  See the sample code below for how this function is
         used. */
 
-	global $db_conn, $success;
-	$statement = OCIParse($db_conn, $cmdstr);
+    global $db_conn, $success;
+    $statement = OCIParse($db_conn, $cmdstr);
 
-	if (!$statement) {
-		echo "<br>Cannot parse this command: " . $cmdstr . "<br>";
-		$e = OCI_Error($db_conn);
-		echo htmlentities($e['message']);
-		$success = False;
-	}
+    if (!$statement) {
+        echo "<br>Cannot parse this command: " . $cmdstr . "<br>";
+        $e = OCI_Error($db_conn);
+        echo htmlentities($e['message']);
+        $success = False;
+    }
 
-	foreach ($list as $tuple) {
-		foreach ($tuple as $bind => $val) {
-			//echo $val;
-			//echo "<br>".$bind."<br>";
-			OCIBindByName($statement, $bind, $val);
-			unset ($val); // Make sure you do not remove this.
+    foreach ($list as $tuple) {
+        foreach ($tuple as $bind => $val) {
+            //echo $val;
+            //echo "<br>".$bind."<br>";
+            OCIBindByName($statement, $bind, $val);
+            unset ($val); // Make sure you do not remove this.
                               // Otherwise, $val will remain in an 
                               // array object wrapper which will not 
                               // be recognized by Oracle as a proper
                               // datatype.
-		}
-		$r = OCIExecute($statement, OCI_DEFAULT);
-		if (!$r) {
-			echo "<br>Cannot execute this command: " . $cmdstr . "<br>";
-			$e = OCI_Error($statement);
+        }
+        $r = OCIExecute($statement, OCI_DEFAULT);
+        if (!$r) {
+            echo "<br>Cannot execute this command: " . $cmdstr . "<br>";
+            $e = OCI_Error($statement);
                 // For OCIExecute errors pass the statement handle
-			echo htmlentities($e['message']);
-			echo "<br>";
-			$success = False;
-		}
-	}
+            echo htmlentities($e['message']);
+            echo "<br>";
+            $success = False;
+        }
+    }
 
 }
 
@@ -237,34 +207,34 @@ function printTable($resultFromSQL, $namesOfColumnsArray)
 // Connect Oracle...
 if ($db_conn) {
     global $localvarrr;
-	if (array_key_exists('reset', $_POST)) {
-		// Drop old table...
-		// echo "<br> dropping table <br>";
-		// executePlainSQL("Drop table location");
+    if (array_key_exists('reset', $_POST)) {
+        // Drop old table...
+        // echo "<br> dropping table <br>";
+        // executePlainSQL("Drop table location");
 
-		// // Create new table...
-		// echo "<br> creating new table <br>";
-		// executePlainSQL("create table location (locationID varchar2(30), buildingCode varchar2(30), areaCode varchar2(30), capacity number, bookable varchar2(1), primary key (locationID))");
+        // // Create new table...
+        // echo "<br> creating new table <br>";
+        // executePlainSQL("create table location (locationID varchar2(30), buildingCode varchar2(30), areaCode varchar2(30), capacity number, bookable varchar2(1), primary key (locationID))");
         // OCICommit($db_conn);
 
-	} else {
-		if (array_key_exists('insertsubmit', $_POST)) {
+    } else {
+        if (array_key_exists('insertsubmit', $_POST)) {
             $localvarrr = 6;
-			// Get values from the user and insert data into 
+            // Get values from the user and insert data into 
                 // the table.
-			$tuple = array (
+            $tuple = array (
                 ":bind1" => $_POST['insID'],
                 ":bind2" => $_POST['insBuildingCode'],
                 ":bind3" => $_POST['insAreaCode'],
                 ":bind4" => $_POST['insCapacity'],
                 ":bind5" => $_POST['insBookable']
                 
-			);
-			$alltuples = array (
-				$tuple
-			);
-			executeBoundSQL("insert into location values (:bind1, :bind2, :bind3, :bind4, :bind5)", $alltuples);
-			OCICommit($db_conn);
+            );
+            $alltuples = array (
+                $tuple
+            );
+            executeBoundSQL("insert into location values (:bind1, :bind2, :bind3, :bind4, :bind5)", $alltuples);
+            OCICommit($db_conn);
 
         }
         else {
@@ -290,9 +260,10 @@ if ($db_conn) {
     }
     $lol = array_key_exists('locationSearch', $_POST) || array_key_exists('locationCapacitySearch', $_POST);
     $lol = !$lol;
-	if ($_POST && $success && $lol) {
+    if ($_POST && $success && $lol) {
         //POST-REDIRECT-GET -- See http://en.wikipedia.org/wiki/Post/Redirect/Get
-	} else {
+        header("location: locationView.php");
+    } else {
         // Select data...
         if (array_key_exists('locationSearch', $_POST)) {
             $eventsearched = $_POST['locationSearchString'];
@@ -305,16 +276,14 @@ if ($db_conn) {
         }
         $columnNames = array("Location ID", "Building Code", "Area Code", "Capacity", "Bookable");
         printTable($result, $columnNames);
+    }
 
-        
-	}
-
-	//Commit to save changes...
+    //Commit to save changes...
     OCILogoff($db_conn);
 
 
 } else {
-	echo "cannot connect";
-	$e = OCI_Error(); // For OCILogon errors pass no handle
-	echo htmlentities($e['message']);
+    echo "cannot connect";
+    $e = OCI_Error(); // For OCILogon errors pass no handle
+    echo htmlentities($e['message']);
 }
