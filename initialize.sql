@@ -478,9 +478,17 @@ VALUES
 	INSERT INTO ExecutiveOversees
 	VALUES
 	(
-	  (SELECT studentID from Student WHERE studentID='1'),
-	  'Assistant Director of Clubs',
-	  (SELECT executiveID from ExecutiveOversees WHERE executiveID='2')
+		(SELECT studentID from Student WHERE studentID='4'),
+		'VP Administration',
+		NULL
+	);
+
+	INSERT INTO ExecutiveOversees
+	VALUES
+	(
+		(SELECT studentID from Student WHERE studentID='5'),
+		'VP Academic University and Affairs',
+		NULL
 	);
 
 	INSERT INTO ExecutiveOversees
@@ -502,17 +510,9 @@ VALUES
 	INSERT INTO ExecutiveOversees
 	VALUES
 	(
-	  (SELECT studentID from Student WHERE studentID='4'),
-	  'VP Administration',
-	  NULL
-	);
-
-	INSERT INTO ExecutiveOversees
-	VALUES
-	(
-	  (SELECT studentID from Student WHERE studentID='5'),
-	  'VP Academic University and Affairs',
-	  NULL
+		(SELECT studentID from Student WHERE studentID='1'),
+		'Assistant Director of Clubs',
+		(SELECT executiveID from ExecutiveOversees WHERE executiveID='2')
 	);
 
 	INSERT INTO memberOf
