@@ -480,7 +480,7 @@ VALUES
 	(
 	  (SELECT studentID from Student WHERE studentID='1'),
 	  'Assistant Director of Clubs',
-	  (SELECT executiveID from ExecutiveOversees WHERE executiveID='2')
+	  '2'
 	);
 
 	INSERT INTO ExecutiveOversees
@@ -488,7 +488,7 @@ VALUES
 	(
 	  (SELECT studentID from Student WHERE studentID='2'),
 	  'Director of Clubs',
-	  (SELECT executiveID from ExecutiveOversees WHERE executiveID='4')
+	  '4'
 	);
 
 	INSERT INTO ExecutiveOversees
@@ -496,7 +496,7 @@ VALUES
 	(
 	  (SELECT studentID from Student WHERE studentID='3'),
 	  'Director of Information Technology',
-	  (SELECT executiveID from ExecutiveOversees WHERE executiveID='5')
+	  '5'
 	);
 
 	INSERT INTO ExecutiveOversees
