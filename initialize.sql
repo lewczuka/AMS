@@ -532,8 +532,22 @@ VALUES
 	INSERT INTO memberOf
 	VALUES
 	(
+		(SELECT clubName from Club WHERE clubName='AMS Amateur Radio Society'),
+		(SELECT studentID from Student WHERE studentID='1')
+	);
+
+	INSERT INTO memberOf
+	VALUES
+	(
 	  (SELECT clubName from Club WHERE clubName='AMS Figure Skating Club At UBC'),
 	  (SELECT studentID from Student WHERE studentID='3')
+	);
+
+	INSERT INTO memberOf
+	VALUES
+	(
+		(SELECT clubName from Club WHERE clubName='AMS Figure Skating Club At UBC'),
+		(SELECT studentID from Student WHERE studentID='1')
 	);
 
 	INSERT INTO memberOf
@@ -546,8 +560,22 @@ VALUES
 	INSERT INTO memberOf
 	VALUES
 	(
+		(SELECT clubName from Club WHERE clubName='AMS Psychedelic Community'),
+		(SELECT studentID from Student WHERE studentID='1')
+	);
+
+	INSERT INTO memberOf
+	VALUES
+	(
 	  (SELECT clubName from Club WHERE clubName='AMS Writers Guild'),
 	  (SELECT studentID from Student WHERE studentID='5')
+	);
+
+	INSERT INTO memberOf
+	VALUES
+	(
+		(SELECT clubName from Club WHERE clubName='AMS Writers Guild'),
+		(SELECT studentID from Student WHERE studentID='1')
 	);
 
 	INSERT INTO Accesses
